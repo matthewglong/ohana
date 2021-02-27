@@ -28,7 +28,7 @@ share/python-wheels/
 MANIFEST
 
 # Credentials
-sfdc_creds/*
+sfdc_creds/
 
 
 # PyInstaller
