@@ -3,6 +3,7 @@ import ohana.filepath as filepath
 import json
 from simple_salesforce import Salesforce
 import os
+import getpass
 
 
 def InstSFDC():
@@ -34,7 +35,11 @@ def InstSFDC():
             )
         creds = {}
         for key in ["username", "password", "security_token"]:
-            creds[key] = input(f"Please enter your SFDC {key}: ")
+            help_text = f"Please enter your SFDC {key}: "
+            if key in ["password", "security_token"]:
+                creds[key] = getpass.getpass(help_text)
+            else:
+                creds[key] = input(help_text)
 
         with open(creds_path, "w") as outfile:
             json.dump(creds, outfile)
