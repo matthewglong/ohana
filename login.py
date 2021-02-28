@@ -19,34 +19,17 @@ def LoadSecretKey(filepath=""):
     return secret
 
 
-def EncryptText(text, secret):
+def TransCryptText(text, func):
     encoded_text = text.encode()
-    encrypted_bits = secret.encrypt(encoded_text)
-    encrypted_text = encrypted_bits.decode()
-    return encrypted_text
+    crypt_bits = func(encoded_text)
+    crypt_text = crypt_bits.decode()
+    return crypt_text
 
 
-def DecryptText(text, secret):
-    encoded_text = text.encode()
-    decrypted_bits = secret.decrypt(encoded_text)
-    decrypted_text = decrypted_bits.decode()
-    return decrypted_text
-
-
-def EncryptDict(target_dict, secret_key):
-    encrypted_dict = {
-        EncryptText(i, secret_key): EncryptText(v, secret_key)
-        for i, v in target_dict.items()
-    }
-    return encrypted_dict
-
-
-def DecryptDict(target_dict, secret_key):
-    decrypted_dict = {
-        DecryptText(i, secret_key): DecryptText(v, secret_key)
-        for i, v in target_dict.items()
-    }
-    return decrypted_dict
+def TransCryptDict(target_dict, func):
+    tct = TransCryptText
+    crypt_dict = {tct(k, func): tct(v, func) for k, v in target_dict.items()}
+    return crypt_dict
 
 
 def InstSFDC():
@@ -64,7 +47,7 @@ def InstSFDC():
     try:
         with open(creds_path) as c:
             encrypted_creds = json.load(c)
-            creds = DecryptDict(encrypted_creds, secret_key)
+            creds = TransCryptDict(encrypted_creds, secret_key.decrypt)
             sf = Salesforce(
                 username=creds["username"],
                 password=creds["password"],
@@ -86,7 +69,7 @@ def InstSFDC():
             else:
                 creds[key] = input(help_text)
 
-        encrypted_creds = EncryptDict(creds, secret_key)
+        encrypted_creds = TransCryptDict(creds, secret_key.encrypt)
 
         with open(creds_path, "w") as outfile:
             json.dump(encrypted_creds, outfile)
