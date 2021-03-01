@@ -1,5 +1,4 @@
 # %%
-import ohana.filepath as filepath
 import json
 from simple_salesforce import Salesforce
 import os
@@ -33,12 +32,13 @@ def TransCryptDict(target_dict, func):
 
 
 def InstSFDC():
-    dummy_file = "filepath.py"
+    dummy_file = "login.py"
     creds_dir_name = "sfdc_creds"
     creds_file_name = "sfdc_creds.json"
-    root = filepath.__file__.replace("/" + dummy_file, "")
-    creds_dir = os.path.sep.join([root, creds_dir_name])
-    creds_path = os.path.sep.join([creds_dir, creds_file_name])
+    slash = os.path.sep
+    root = __file__.replace(slash + dummy_file, "")
+    creds_dir = slash.join([root, creds_dir_name])
+    creds_path = slash.join([creds_dir, creds_file_name])
     if "sfdc_creds" not in os.listdir(root):
         os.mkdir(creds_dir)
 
