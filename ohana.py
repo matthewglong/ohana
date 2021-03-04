@@ -88,7 +88,7 @@ def InsertRecords(df, sfdc_object, csv=True):
     cols = df.columns
     if "Id" in cols:
         raise ValueError("DataFrame cannot have an Id column for upload.")
-    available_fields = ListObjectFields("Test__c", ["name"]).values
+    available_fields = ListObjectFields(sfdc_object, ["name"]).values
     erroneous_fields = [f for f in cols if f not in available_fields]
     if len(erroneous_fields) > 0:
         raise ValueError(
@@ -109,7 +109,7 @@ def UpdateRecords(df, sfdc_object, csv=True):
     cols = df.columns
     if "Id" not in cols:
         raise ValueError("DataFrame requires an 'Id' column for upload.")
-    available_fields = ListObjectFields("Test__c", ["name"]).values
+    available_fields = ListObjectFields(sfdc_object, ["name"]).values
     erroneous_fields = [f for f in cols if f not in available_fields]
     if len(erroneous_fields) > 0:
         raise ValueError(
