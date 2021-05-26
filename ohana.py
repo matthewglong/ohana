@@ -52,17 +52,19 @@ def printSOQL(statement):
 
 
 # Run Flow from Query to DataFrame
-def soql_to_df(soql_query):
-    print("QUERY\n------------")
-    printSOQL(soql_query)
+def soql_to_df(soql_query, print_result=False):
+    if print_result:
+        print("QUERY\n------------")
+        printSOQL(soql_query)
     result = sf.query_all(soql_query)
     if result["totalSize"] != 0:
         df = sfdc_to_df(result)
-        print("\n\nFIRST RECORD\n------------")
-        print(df.iloc[0])
-        print(f"\n------------\n{len(df)} records found.")
+        if print_result:
+            print("\n\nFIRST RECORD\n------------")
+            print(df.iloc[0])
+            print(f"\n------------\n{len(df)} records found.")
         return df
-    else:
+    elif print_result:
         print(f"\n------------\n0 records found.")
 
 
