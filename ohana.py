@@ -102,7 +102,7 @@ def InsertRecords(df, sfdc_object, csv=True):
         raise ValueError(
             f"One or more fields are not a part of the {sfdc_object} object.\n\nPlease revise: {erroneous_fields}"
         )
-    upload_dict = [dict(i[1]) for i in df.fillna('').iterrows()]
+    upload_dict = [{k:v for k, v in dict(row).items() if v} for _, row in df.iterrows()]
     result = eval(f"sf.bulk.{sfdc_object}.insert(upload_dict)")
     post_mortem = pd.DataFrame(result)
     post_mortem = pd.concat([post_mortem, df], axis=1)
