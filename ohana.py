@@ -93,6 +93,7 @@ def SelectStar(sfdc_object):
 
 
 def InsertRecords(df, sfdc_object, csv=True):
+    df.reset_index(inplace=True, drop=True);
     cols = df.columns
     if "Id" in cols:
         raise ValueError("DataFrame cannot have an Id column for upload.")
