@@ -15,6 +15,7 @@ def LoadSecretKey(filepath=""):
         with open(f"{filepath}{os.path.sep}secret.key", "rb") as key_file:
             key = key_file.read()
     secret = Fernet(key)
+    print('we did it!')
     return secret
 
 
