@@ -15,7 +15,6 @@ def LoadSecretKey(filepath=""):
         with open(f"{filepath}{os.path.sep}secret.key", "rb") as key_file:
             key = key_file.read()
     secret = Fernet(key)
-    print('we did it!')
     return secret
 
 
@@ -49,8 +48,6 @@ def InstSFDC():
         with open(creds_path) as c:
             encrypted_creds = json.load(c)
             creds = TransCryptDict(encrypted_creds, secret_key.decrypt)
-            for k, v in creds.items():
-                print(k, v)
             sf = Salesforce(
                 username=creds["username"],
                 password=creds["password"],
