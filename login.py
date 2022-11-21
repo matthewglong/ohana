@@ -9,10 +9,10 @@ from cryptography.fernet import Fernet
 def LoadSecretKey(filepath=""):
     if "secret.key" not in os.listdir(filepath):
         key = Fernet.generate_key()
-        with open(f"{filepath}/secret.key", "wb") as key_file:
+        with open(f"{filepath}{os.path.sep}secret.key", "wb") as key_file:
             key_file.write(key)
     else:
-        with open(f"{filepath}/secret.key", "rb") as key_file:
+        with open(f"{filepath}{os.path.sep}secret.key", "rb") as key_file:
             key = key_file.read()
     secret = Fernet(key)
     return secret
